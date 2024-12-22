@@ -50,6 +50,11 @@ variable "primary_contact" {
   default = null
 }
 
+variable "delegated_admin" {
+  type    = set(string)
+  default = []
+}
+
 variable "disable_sso_management" {
   type = bool
 }
@@ -65,6 +70,11 @@ resource "aws_organizations_account" "account" {
   }
 }
 
+resource "aws_organizations_delegated_administrator" "delegated_admin" {
+  for_each          = var.delegated_admin
+  account_id        = aws_organizations_account.account.id
+  service_principal = each.value
+}
 
 output "account_id" {
   value = aws_organizations_account.account.id

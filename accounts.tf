@@ -32,5 +32,6 @@ module "accounts" {
   operations_contact       = lookup(each.value, "operations_contact", var.global_operations_contact)
   primary_contact          = lookup(each.value, "primary_contact", var.global_primary_contact)
   disable_sso_management   = var.disable_sso_management
+  delegated_admin          = lookup(each.value, "delegated_admin", [])
 }
 

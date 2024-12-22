@@ -40,28 +40,6 @@ module "security_account" {
 
 
 # And delegate power to it
-
-
-# resource "aws_organizations_delegated_administrator" "macie" {
-#   account_id        = module.security_account.account_id
-#   service_principal = "macie.amazonaws.com"
-# }
-
-# resource "aws_organizations_delegated_administrator" "inspector2" {
-#   account_id        = module.security_account.account_id
-#   service_principal = "inspector2.amazonaws.com"
-# }
-
-# resource "aws_organizations_delegated_administrator" "securityhub" {
-#   account_id        = module.security_account.account_id
-#   service_principal = "securityhub.amazonaws.com"
-# }
-
-resource "aws_organizations_delegated_administrator" "sso" {
-  account_id        = module.security_account.account_id
-  service_principal = "sso.amazonaws.com"
-}
-
 resource "aws_organizations_delegated_administrator" "cloudformation" {
   account_id        = module.security_account.account_id
   service_principal = "member.org.stacksets.cloudformation.amazonaws.com"

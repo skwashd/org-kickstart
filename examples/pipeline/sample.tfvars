@@ -55,6 +55,14 @@ organization = {
       account_name  = "example-kickstart-it"
       account_email = "aws+kickstart-it@example.com"
     }
+
+    sso = {
+      account_name  = "example-sso"
+      account_email = "aws+ssot@example.com"
+      parent_ou_name = "Governance"
+      delegated_admin = ["sso.amazonaws.com"]
+    }
+
     sandbox = {
       account_name  = "example-kickstart-sandbox"
       account_email = "aws+kickstart-sandbox@example.com"
