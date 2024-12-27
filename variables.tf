@@ -117,7 +117,7 @@ variable "accounts" {
     object({
       account_name   = string
       account_email  = string
-      parent_ou_name = optional(string)
+      parent_ou_name = optional(string, "Workloads")
     })
   )
 }
@@ -226,8 +226,8 @@ variable "service_control_policies" {
       policy_name        = string
       policy_description = string
       policy_json_file   = string
-      policy_targets     = optional(list(string))
-      policy_vars        = optional(map(any))
+      policy_targets     = optional(list(string), ["Root"])
+      policy_vars        = optional(map(string), {})
     })
   )
 }
@@ -235,6 +235,15 @@ variable "service_control_policies" {
 variable "resource_control_policies" {
   description = "Map of RCPs to deploy"
   default     = {}
+  type = map(
+    object({
+      policy_name        = string
+      policy_description = string
+      policy_json_file   = string
+      policy_targets     = optional(list(string), ["Root"])
+      policy_vars        = optional(map(string), {})
+    })
+  )
 }
 
 variable "organization_units" {
@@ -252,11 +261,19 @@ variable "organization_units" {
 variable "declarative_policy_bucket_name" {
   description = "Name of S3 Bucket for Declarative Policy Reports"
   default     = null
+  type        = string
 }
 
 variable "declarative_policies" {
   description = "Map of Declarative Policies to deploy"
   default     = {}
+  type = map(object({
+    policy_name        = string
+    policy_description = string
+    policy_json_file   = string
+    policy_targets     = optional(list(string), ["Root"])
+    policy_vars        = optional(map(string), {})
+  }))
 }
 
 #

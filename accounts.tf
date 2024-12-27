@@ -24,7 +24,7 @@ module "accounts" {
 
   account_name             = each.value["account_name"]
   account_email            = each.value["account_email"]
-  parent_ou_id             = local.ou_name_to_id[lookup(each.value, "parent_ou_name", "Workloads")]
+  parent_ou_id             = local.ou_name_to_id[each.value.parent_ou_name]
   admin_permission_set_arn = var.disable_sso_management ? null : aws_ssoadmin_permission_set.admin_permission_set[0].arn
   admin_group_id           = var.disable_sso_management ? null : aws_identitystore_group.admin_group[0].group_id
   billing_contact          = var.global_billing_contact
@@ -35,3 +35,6 @@ module "accounts" {
   delegated_admin          = lookup(each.value, "delegated_admin", [])
 }
 
+output "ou_name_to_id" {
+  value = local.ou_name_to_id
+}
