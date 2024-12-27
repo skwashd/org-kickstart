@@ -64,7 +64,7 @@ variable "session_duration" {
 
   validation {
     # Regex taken from https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sso-permissionset.html#cfn-sso-permissionset-sessionduration and modified to use HCL2 compatiable syntax
-    condition     = can(regex("^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$", var.session_duration))
+    condition     = can(regex("^P(?:(\\d+Y)?(\\d+M)?(\\d+D)?(T(\\d+H)?(\\d+M)?(\\d+S)?)?)$", var.session_duration))
     error_message = "Session duration must use the ISO8601 duration format. ${var.session_duration} isn't a valid duration string"
   }
 }
