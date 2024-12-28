@@ -317,3 +317,16 @@ variable "deploy_audit_role" {
   type        = bool
   default     = true
 }
+
+#
+# Security Service flags
+variable "security_services" {
+  description = "explictly disable or not manage a security service"
+  type        = map(string)
+  default = {
+    disable_guardduty   = "false"
+    disable_macie       = "false"
+    disable_inspector   = "false"
+    disable_securityhub = "false"
+  }
+}
