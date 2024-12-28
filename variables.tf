@@ -273,11 +273,19 @@ variable "organization_units" {
 variable "declarative_policy_bucket_name" {
   description = "Name of S3 Bucket for Declarative Policy Reports"
   default     = null
+  type        = string
 }
 
 variable "declarative_policies" {
   description = "Map of Declarative Policies to deploy"
   default     = {}
+  type = map(object({
+    policy_name        = string
+    policy_description = string
+    policy_json_file   = string
+    policy_targets     = optional(list(string), ["Root"])
+    policy_vars        = optional(map(string), {})
+  }))
 }
 
 #

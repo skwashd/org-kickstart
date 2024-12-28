@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-output "org_name" {
-  value = var.organization_name
+
+output "declarative_policy_bucket" {
+  description = "Bucket used to store declarative policies"
+  value       = var.declarative_policy_bucket_name != null ? aws_s3_bucket.declarative_policy_bucket[0].id : null
 }
 
 output "macie_key_arn" {
@@ -22,7 +24,8 @@ output "macie_key_arn" {
 }
 
 output "org_id" {
-  value = data.aws_organizations_organization.org.id
+  description = "ID of the AWS Organization"
+  value       = data.aws_organizations_organization.org.id
 }
 
 output "org_name" {
