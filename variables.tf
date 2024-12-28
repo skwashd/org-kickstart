@@ -247,8 +247,8 @@ variable "service_control_policies" {
       policy_name        = string
       policy_description = string
       policy_json_file   = string
-      policy_targets     = optional(list(string))
-      policy_vars        = optional(map(any))
+      policy_targets     = optional(list(string), ["Root"])
+      policy_vars        = optional(map(string), {})
     })
   )
 }
