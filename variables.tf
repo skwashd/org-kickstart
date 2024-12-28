@@ -115,9 +115,30 @@ variable "accounts" {
   description = "AWS accounts to provision in the organization"
   type = map(
     object({
-      account_name   = string
-      account_email  = string
-      parent_ou_name = optional(string)
+      account_name    = string
+      account_email   = string
+      delegated_admin = optional(list(string), [])
+      operations_contact = optional(object({
+        name          = string
+        title         = string
+        email_address = string
+        phone_number  = string
+      }))
+      primary_contact = optional(object({
+        full_name          = string
+        company_name       = optional(string)
+        address_line_1     = string
+        address_line_2     = optional(string)
+        address_line_3     = optional(string)
+        city               = string
+        district_or_county = optional(string)
+        state_or_region    = optional(string)
+        postal_code        = string
+        country_code       = string
+        phone_number       = string
+        website_url        = optional(string)
+      }))
+      parent_ou_name = optional(string, "Workloads")
     })
   )
 }

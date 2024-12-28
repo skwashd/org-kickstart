@@ -16,17 +16,28 @@ output "org_name" {
   value = var.organization_name
 }
 
+output "macie_key_arn" {
+  description = "ARN of the KMS Key used by Macie"
+  value       = var.macie_bucket_name == null ? null : aws_kms_key.macie_key[0].arn
+}
+
 output "org_id" {
   value = data.aws_organizations_organization.org.id
 }
 
-output "security_account_id" {
-  value = module.security_account.account_id
+output "org_name" {
+  description = "Name of the AWS Organization"
+  value       = var.organization_name
 }
 
-# Things to pass to the Security Services Regional Modules
-output "macie_key_arn" {
-  value = var.macie_bucket_name == null ? null : aws_kms_key.macie_key[0].arn
+output "ou_name_to_id" {
+  description = "Map of OU Names to OU IDs"
+  value       = local.ou_name_to_id
+}
+
+output "security_account_id" {
+  description = "ID of the Security Account"
+  value       = module.security_account.account_id
 }
 
 output "sso_instance_arn" {
