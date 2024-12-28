@@ -256,6 +256,15 @@ variable "service_control_policies" {
 variable "resource_control_policies" {
   description = "Map of RCPs to deploy"
   default     = {}
+  type = map(
+    object({
+      policy_name        = string
+      policy_description = string
+      policy_json_file   = string
+      policy_targets     = optional(list(string), ["Root"])
+      policy_vars        = optional(map(string), {})
+    })
+  )
 }
 
 variable "organization_units" {
