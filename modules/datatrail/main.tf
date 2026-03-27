@@ -48,6 +48,12 @@ variable "enabled" {
   description = "Boolean to indicate if the trail logging should be enabled"
 }
 
+variable "use_bucket_namespace" {
+  description = "Whether to use bucket namespaced to account and region for the created S3 buckets. This is required to ensure unique bucket names across accounts and regions. If set to false, the bucket names will be exactly as specified in the variables which may cause conflicts if the same name is used in multiple accounts or regions."
+  type        = bool
+  default     = true
+}
+
 data "aws_caller_identity" "payer" {}
 
 data "aws_partition" "payer" {}

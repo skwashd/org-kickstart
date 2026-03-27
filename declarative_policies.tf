@@ -17,7 +17,9 @@
 #
 resource "aws_s3_bucket" "declarative_policy_bucket" {
   count  = var.declarative_policy_bucket_name == null ? 0 : 1
-  bucket = var.declarative_policy_bucket_name
+  bucket = var.use_bucket_namespace ? "${var.declarative_policy_bucket_name}-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.region}-an" : var.declarative_policy_bucket_name
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_versioning" "declarative_policy_bucket" {

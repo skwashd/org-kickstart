@@ -49,8 +49,10 @@ resource "aws_cloudtrail" "datatrail" {
 #
 resource "aws_s3_bucket" "datatrail_bucket" {
   provider      = aws.security-account
-  bucket        = var.bucket_name
+  bucket        = var.use_bucket_namespace ? "${var.bucket_name}-${data.aws_caller_identity.payer.account_id}-${data.aws_region.payer.region}-an" : "${var.bucket_name}"
   force_destroy = true
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_versioning" "datatrail_bucket" {

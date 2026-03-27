@@ -16,7 +16,9 @@
 resource "aws_s3_bucket" "vpc_flowlogs_bucket" {
   count    = var.vpc_flowlogs_bucket_name == null ? 0 : 1
   provider = aws.security-account
-  bucket   = var.vpc_flowlogs_bucket_name
+  bucket   = var.use_bucket_namespace ? "${var.vpc_flowlogs_bucket_name}-${data.aws_caller_identity.security.account_id}-${data.aws_region.security.region}-an" : var.vpc_flowlogs_bucket_name
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_versioning" "vpc_flowlogs_bucket" {

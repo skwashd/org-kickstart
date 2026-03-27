@@ -24,7 +24,9 @@ data "aws_billing_service_account" "main" {}
 
 resource "aws_s3_bucket" "billing_logs" {
   count  = var.billing_data_bucket_name != null ? 1 : 0
-  bucket = var.billing_data_bucket_name
+  bucket = var.use_bucket_namespace ? "${var.billing_data_bucket_name}-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.region}-an" : var.billing_data_bucket_name
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_public_access_block" "billing_logs" {

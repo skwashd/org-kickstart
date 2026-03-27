@@ -23,6 +23,12 @@ variable "tag_set" {
   default     = {}
 }
 
+variable "use_bucket_namespace" {
+  description = "Whether to use bucket namespaced to account and region for the created S3 buckets. This is required to ensure unique bucket names across accounts and regions. If set to false, the bucket names will be exactly as specified in the variables which may cause conflicts if the same name is used in multiple accounts or regions."
+  type        = bool
+  default     = true
+}
+
 #
 # Core Accounts
 #
@@ -109,7 +115,7 @@ variable "sso_instance_region" {
 variable "cloudtrail_bucket_name" {
   description = "Name of the S3 Bucket to create to store CloudTrail events. Set to null to disable CloudTrail management"
   type        = string
-  default     = null
+  default     = "cloudtrail-common"
 }
 variable "cloudtrail_loggroup_name" {
   description = "Name of the CloudWatch Log Group in the payer account where CloudTrail will send its events. Set to null to disable CloudTrail to CloudWatch Logs."
@@ -121,14 +127,14 @@ variable "cloudtrail_loggroup_name" {
 variable "vpc_flowlogs_bucket_name" {
   description = "Name of the S3 Bucket to create to store VPC Flow Logs. Set to null to skip creation"
   type        = string
-  default     = null
+  default     = "vpcflows"
 }
 
 # Macie Bucket
 variable "macie_bucket_name" {
   description = "Name of the S3 Bucket to create to store Macie Findings. Set to null to skip creation"
   type        = string
-  default     = null
+  default     = "macie-common"
 }
 
 
@@ -219,6 +225,12 @@ variable "account_configurator" {
 variable "backend_bucket" {
   description = "Name of the S3 bucket used for the CloudFormation stacks and Terraform state backend"
   type        = string
+  default     = null
+
+  validation {
+    condition     = var.account_configurator == null || (var.account_configurator != null && var.backend_bucket != null)
+    error_message = "backend_bucket must be set if account_configurator is set"
+  }
 }
 
 
@@ -280,7 +292,7 @@ variable "global_primary_contact" {
 variable "billing_data_bucket_name" {
   description = "Name of the S3 Bucket for CUR reports. Set to null to disable CUR report generation."
   type        = string
-  default     = null
+  default     = "billing-reports"
 }
 
 variable "cur_report_frequency" {

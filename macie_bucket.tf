@@ -18,7 +18,9 @@
 resource "aws_s3_bucket" "macie_bucket" {
   count    = var.macie_bucket_name == null ? 0 : 1
   provider = aws.security-account
-  bucket   = var.macie_bucket_name
+  bucket   = var.use_bucket_namespace ? "${var.macie_bucket_name}-${data.aws_caller_identity.security.account_id}-${data.aws_region.security.region}-an" : var.macie_bucket_name
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_versioning" "macie_bucket" {

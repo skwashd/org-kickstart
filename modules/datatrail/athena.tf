@@ -44,8 +44,10 @@ resource "aws_glue_catalog_database" "datatrail" {
 # S3 Bucket for Athena query results
 resource "aws_s3_bucket" "athena_output" {
   provider      = aws.security-account
-  bucket        = "${var.bucket_name}-athena-results"
+  bucket        = var.use_bucket_namespace ? "${var.bucket_name}-athena-results-${data.aws_caller_identity.payer.account_id}-${data.aws_region.payer.region}-an" : "${var.bucket_name}-athena-results"
   force_destroy = true
+
+  bucket_namespace = var.use_bucket_namespace ? "account-regional" : null
 }
 
 resource "aws_s3_bucket_versioning" "athena_output" {
