@@ -2,6 +2,7 @@
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "DenyRegionsExceptAllowedAndBedrockInvoke",
       "NotAction": [
         "a4b:*",
         "acm:*",
@@ -9,6 +10,8 @@
         "aws-marketplace:*",
         "aws-portal:*",
         "awsbillingconsole:*",
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream",
         "budgets:*",
         "ce:*",
         "chime:*",
@@ -56,6 +59,26 @@
             "arn:aws:iam::*:role/${audit_role_name}",
             "arn:aws:iam::*:role/OrganizationAccountAccessRole",
             "arn:aws:iam::*:role/stacksets-exec-*",
+            "arn:aws:iam::*:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyBedrockInvokeOutsideCrossRegionInference",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": "*",
+      "Effect": "Deny",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": ${allowed_bedrock_cross_regions}
+        },
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/OrganizationAccountAccessRole",
             "arn:aws:iam::*:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
           ]
         }
