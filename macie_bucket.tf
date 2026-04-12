@@ -147,5 +147,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "macie_bucket" {
       kms_master_key_id = aws_kms_key.macie_key[0].arn
       sse_algorithm     = "aws:kms"
     }
+
+    blocked_encryption_types = [
+      "NONE"
+    ]
   }
 }
