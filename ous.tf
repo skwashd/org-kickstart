@@ -41,14 +41,14 @@ resource "aws_organizations_organizational_unit" "suspended_ou" {
 }
 
 # Fetch the list of AWS Organizational Units
-data "aws_organizations_organizational_units" "all_ous" {
+data "aws_organizations_organizational_unit_descendant_organizational_units" "all" {
   parent_id = data.aws_organizations_organization.org.roots[0].id
 }
 
 # Create a map to look up OU IDs by name. Thanks ChatGPT for almost getting there with what I needed.
 locals {
   ou_name_to_id = {
-    for ou in data.aws_organizations_organizational_units.all_ous.children :
+    for ou in data.aws_organizations_organizational_unit_descendant_organizational_units.all.children :
     ou.name => ou.id
   }
 }
